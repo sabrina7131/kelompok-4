@@ -46,6 +46,20 @@ header a{
     font-size: 16px;
 }
 
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+header #branding, header .active a{ 
+    color: #fff;
+    font-weight: bold;
+}
+
+header a: hover
+    color: #ffb3c6;
+    font-weight: bold;
+} 
 
 
     
