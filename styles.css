@@ -6,7 +6,7 @@ body{
     background-color: #ffe5ec;
 }  
 
-.container
+.container{
     width: 80%;
     margin: auto;
     overflow: hidden;
@@ -56,7 +56,7 @@ header #branding, header .active a{
     font-weight: bold;
 }
 
-header a: hover
+header a: hover{
     color: #ffb3c6;
     font-weight: bold;
 } 
