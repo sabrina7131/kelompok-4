@@ -2,17 +2,17 @@
 
 h1 {
     text-align: center;
-    font-family: Georgia, "shrinkhand", sans-serif;
-    font-weight: bold;
-}
-body {background-color: pink};
-body{marquee}
+        font-family: Georgia, "shrinkhand", sans-serif;
+            font-weight: bold;
+            }
+            body {background-color: pink};
+            body{marquee}
 
-h1{text-align:center;color:white;
-}
+            h1{text-align:center;color:white;
+            }
 
-ul {list-style-type: none; background-color: azure; border: 4px blueviolet;
-}
+            ul {list-style-type: none; background-color: azure; border: 4px blueviolet;
+            }
 
-li{display:inline;
-}
+            li{display:inline;
+            }
