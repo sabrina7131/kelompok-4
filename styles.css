@@ -1,18 +1,51 @@
-/* Place your CSS styles in this file */
+body{
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+    font-family: script;
+    background-color: #ffe5ec;
+}  
 
-h1 {
-    text-align: center;
-        font-family: Georgia, "shrinkhand", sans-serif;
-            font-weight: bold;
-            }
-            body {background-color: pink};
-            body{marquee}
+.container
+    width: 80%;
+    margin: auto;
+    overflow: hidden;
+}
 
-            h1{text-align:center;color:white;
-            }
+header{
+     background : linear-gradient(to right, #ffb3c6, #ffb3c6);
+     color: #fff;
+     padding-top: 30px;
+     min-height: 70px; 
+     border bottom: 5px solid #ff8fab
+}
 
-            ul {list-style-type: none; background-color: azure; border: 4px blueviolet;
-            }
+header #branding{ 
+    float: left;
+}
 
-            li{display:inline;
-            }
+header #branding h1{
+    margin: 0;
+}
+
+header nav{
+    float: right; 
+    margin-top: 10px;
+}
+
+header li{
+    float: left;
+    display: inline;
+    padding: 0 20px 0 20px; 
+}
+
+header a{
+    color: #fff;
+    text-decorations: none;
+    text-transform: uppercase;
+    font-size: 16px;
+}
+
+
+
+    
