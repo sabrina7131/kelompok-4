@@ -13,8 +13,8 @@ body{
 }
 
 header{
-     background : linear-gradient(to right, #ffb3c6, #ffb3c6);
-     color: #fff;
+     background : linear-gradient(to right, softpink, softpink);
+     color: white;
      padding-top: 30px;
      min-height: 70px; 
      border bottom: 5px solid #ff8fab
@@ -40,7 +40,7 @@ header li{
 }
 
 header a{
-    color: #fff;
+    color: white;
     text-decorations: none;
     text-transform: uppercase;
     font-size: 16px;
@@ -52,12 +52,12 @@ ul{
 }
 
 header #branding, header .active a{ 
-    color: #fff;
+    color: white;
     font-weight: bold;
 }
 
 header a: hover{
-    color: #ffb3c6;
+    color: pink;
     font-weight: bold;
 } 
 
