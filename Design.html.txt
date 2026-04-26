@@ -1,0 +1,230 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Shancha’s Project</title>
+  <style>
+    /* Warna utama dari tema */
+    :root {
+      --blue: #c2e6ffff;
+      --pink: #ffcedfff;
+      --orange: #f9cfffff;
+      --green: #a7cf7e;
+      --light-blue: #b9dcfb;
+      --background-gradient: linear-gradient(135deg, #c3e0fc 0%, #fcd7e6 50%, #f0d6f6ff 100%);
+      --border-color: #f6c4c9;
+      --font-family: 'Verdana';
+    }
+    /* Reset dan dasar */
+    body {
+      margin: 0;
+      padding: 20px;
+      background: var(--background-gradient);
+      font-family: var(--font-family);
+      color: #555;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+    .container {
+      background: #fffbf3ff;
+      border: 5px dotted var(--border-color);
+      border-radius: 20px;
+      width: 900px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      padding: 15px;
+    }
+    /* Navbar */
+    nav {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 15px;
+    }
+    nav a {
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 15px;
+      font-weight: bold;
+      color: white;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 1px 3px rgba(255,255,255,0.7) inset;
+      cursor: pointer;
+    }
+    nav a.home {
+      background: var(--blue);
+      border: 2px dashed #9cc9f3;
+      box-shadow: none;
+    }
+    nav a.design {
+      background: var(--pink);
+      border: 2px dashed #f395b9;
+      box-shadow: none;
+    }
+    nav a.product {
+      background: var(--orange);
+      border: 2px dashed #cb86dcff;
+      box-shadow: none;
+    }
+    nav a:hover {
+      filter: brightness(90%);
+    }
+    /* Header */
+    .header {
+      background: var(--pink);
+      padding: 10px 20px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 15px;
+    }
+    .header .title {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: #fff;
+      text-shadow: 1px 1px 2px #d481a6;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .header .title .flower {
+      font-size: 1.5rem;
+      color: #fff4ae;
+      filter: drop-shadow(1px 1px 1px #d481a6);
+    }
+
+    }
+    /* Content */
+    .content {
+      display: flex;
+      gap: 10px;
+    }
+    .about-section {
+      flex: 2;
+      border: 2px solid var(--blue);
+      border-radius: 20px;
+      padding: 15px;
+      background: #fff;
+      font-size: 0.95rem;
+      color: #5a7fa5;
+      line-height: 1.4;
+    }
+    .about-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: var(--pink);
+      font-weight: 700;
+    }
+    .about-section em {
+      color: var(--pink);
+      font-weight: 600;
+    }
+    .highlight {
+      background: var(--orange);
+      padding: 2px 5px;
+      border-radius: 5px;
+      color: #714d26;
+      font-weight: 600;
+    }
+    /* Buttons section */
+    .buttons-section {
+      flex: 1;
+      background: var(--light-blue);
+      border: 3px solid var(--blue);
+      border-radius: 15px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .buttons-section button {
+      border: none;
+      color: white;
+      font-weight: bold;
+      border-radius: 20px;
+      padding: 10px 0;
+      cursor: pointer;
+      font-size: 1rem;
+      box-shadow: inset 0 1px 2px rgba(255,255,255,0.7);
+      transition: filter 0.3s ease;
+    }
+    .btn-pink {
+      background-color: var(--pink);
+    }
+    .btn-orange {
+      background-color: var(--orange);
+    }
+    .btn-green {
+      background-color: var(--green);
+    }
+    .btn-blue {
+      background-color: var(--blue);
+    }
+    .buttons-section button:hover {
+      filter: brightness(80%);
+    }
+    /* Hearts background in header */
+    .header::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 120px;
+      top: 75px;
+      left: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle 5px at 20% 50%, #f5a6bb 99%, transparent 100%),
+        radial-gradient(circle 5px at 30% 50%, #a4dff5 99%, transparent 100%),
+        radial-gradient(circle 5px at 40% 50%, #f5a6bb 99%, transparent 100%);
+      opacity: 0.15;
+      z-index: -1;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <a href="index.html" class="home">home</a>
+      <a href="Design.html" class="design">design</a>
+      <a href="Product.html" class="product">product</a>
+    </nav>
+    <div class="header" style="position: relative;">
+
+    
+
+      <div class="title">
+        Shancha’s Project <span class="flower">❀</span> 
+        
+      </div>
+        
+      
+    </div>
+    <div class="content">
+      <section class="about-section">
+        <h2> Introducing our logo! ♡</h2>
+
+<div style="position: relative; width: 100%; height: 0; padding-top: 80.0000%;
+ padding-bottom: 0; box-shadow: 0 2px 8px 0 rgba(63,69,81,0.16); margin-top: 1.6em; margin-bottom: 0.9em; overflow: hidden;
+ border-radius: 8px; will-change: transform;">
+  <iframe loading="lazy" style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; border: none; padding: 0;margin: 0;"
+    src="https://www.canva.com/design/DAHH74NpVjY/SNbWgCcA87u50nV4fk_TMA/view?embed" allowfullscreen="allowfullscreen" allow="fullscreen">
+  </iframe>
+</div>
+<a href="https:&#x2F;&#x2F;www.canva.com&#x2F;design&#x2F;DAHH74NpVjY&#x2F;SNbWgCcA87u50nV4fk_TMA&#x2F;view?utm_content=DAHH74NpVjY&amp;utm_campaign=designshare&amp;utm_medium=embeds&amp;utm_source=link" target="_blank" rel="noopener"></a>   
+        <p>
+
+          <span class="highlight"> Bonjour fellas!</span>
+                    <span style="color: #54abf6;"></span> Website ini merupakan hasil kerja sama kelompok kami, di mana setiap anggota berkontribusi dalam berbagi ide, menyusun konsep, hingga mengembangkan tampilan dan fitur bersama-sama. Dalam proses pengerjaannya, setiap anggota memiliki peran masing-masing sesuai kemampuan yang dimiliki, mulai dari perancangan desain, penyusunan konten, hingga pengembangan fitur website. Melalui tahapan tersebut, kami melatih komunikasi, koordinasi, serta kemampuan untuk menyatukan berbagai gagasan menjadi satu konsep yang utuh.
+
+Pembuatan website ini menjadi pengalaman kolaboratif yang mempererat kebersamaan kelompok, karena seluruh proses dilakukan melalui diskusi, pembagian tugas yang seimbang, dan kerja sama yang konsisten.
+
+Let's dive into our web and enjoy the moment!
+        </p>
+
+</body>
+</html>
