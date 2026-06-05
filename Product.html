@@ -226,7 +226,396 @@ Website ini juga menjadi salah satu produk digital yang kami kembangkan sebagai 
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pink Elegant Tic Tac Toe</title>
+    <!-- Font Google: Quicksand untuk kesan elegan -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient-start: #ffe6ea;
+            --bg-gradient-end: #ffdad9;
+            --card-bg: rgba(255, 255, 255, 0.7);
+            --primary-pink: #ff9aa2;
+            --soft-pink: #ffb7b2;
+            --accent-pink: #e29578;
+            --text-color: #6d5652;
+            --shadow-color: rgba(226, 149, 120, 0.25);
+        }
 
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-color);
+            overflow: hidden;
+        }
+
+        /* Efek Gelembung Belakang (Decorative) */
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            z-index: -1;
+            animation: float 6s ease-in-out infinite;
+        }
+        .bubble:nth-child(1) { width: 150px; height: 150px; top: 10%; left: 15%; }
+        .bubble:nth-child(2) { width: 200px; height: 200px; bottom: 20%; right: 10%; animation-delay: 1s; }
+        .bubble:nth-child(3) { width: 100px; height: 100px; top: 60%; left: 10%; animation-delay: 2s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Container Utama */
+        .container {
+            background: var(--card-bg);
+            padding: 40px 50px;
+            border-radius: 40px;
+            box-shadow: 0 20px 50px var(--shadow-color);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            text-align: center;
+            max-width: 450px;
+            width: 90%;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: var(--accent-pink);
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .status {
+            font-size: 1.3rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+            height: 30px;
+        }
+
+        .player-indicator {
+            color: var(--primary-pink);
+            transition: all 0.3s ease;
+        }
+
+        /* Papan Permainan */
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 0 auto 30px auto;
+            width: 100%;
+            max-width: 320px;
+            aspect-ratio: 1;
+        }
+
+        .cell {
+            background: white;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            user-select: none;
+            color: transparent;
+        }
+
+        .cell:hover:not(.taken) {
+            background: #fff5f6;
+            transform: scale(1.03);
+            box-shadow: 0 8px 20px rgba(255, 154, 162, 0.2);
+        }
+
+        /* Warna tanda X dan O */
+        .cell.taken {
+            cursor: default;
+        }
+
+        .cell.x {
+            color: var(--primary-pink);
+            text-shadow: 2px 2px 0px rgba(255, 154, 162, 0.3);
+        }
+
+        .cell.o {
+            color: #b5ead7; /* Warna mint hijau lembut */
+            text-shadow: 2px 2px 0px rgba(181, 234, 215, 0.5);
+        }
+
+        /* Animasi saat mengklik */
+        .pop-in {
+            animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0); }
+            80% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Tombol Reset */
+        .btn-reset {
+            background: linear-gradient(135deg, var(--soft-pink) 0%, var(--primary-pink) 100%);
+            color: white;
+            border: none;
+            padding: 14px 40px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Quicksand', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(255, 183, 178, 0.4);
+            outline: none;
+        }
+
+        .btn-reset:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 183, 178, 0.6);
+        }
+
+        .btn-reset:active {
+            transform: translateY(1px);
+        }
+
+        /* Winning Line Highlight */
+        .cell.winner {
+            background: #fff0f3;
+            color: var(--accent-pink) !important;
+            transform: scale(1.05);
+            box-shadow: inset 0 0 0 3px var(--soft-pink);
+        }
+
+        /* Modal / Alert Sederhanau */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 230, 234, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(226, 149, 120, 0.3);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .overlay.active .modal {
+            transform: scale(1);
+        }
+
+        .modal h2 {
+            color: var(--accent-pink);
+            margin-bottom: 10px;
+            font-size: 2rem;
+        }
+
+        .modal p {
+            margin-bottom: 25px;
+            font-size: 1.2rem;
+            color: var(--text-color);
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Elemen Dekoratif -->
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        
+        <div class="status">
+            Giliran: <span class="player-indicator" id="indicator">X</span>
+        </div>
+
+        <div class="board" id="board">
+            <!-- 9 Sel akan dibuat oleh JS -->
+        </div>
+
+        <button class="btn-reset" onclick="resetGame()">Mulai Ulang</button>
+    </div>
+
+    <!-- Modal Hasil -->
+    <div class="overlay" id="resultOverlay">
+        <div class="modal">
+            <h2 id="resultTitle">Selesai!</h2>
+            <p id="resultMessage">X Menang</p>
+            <button class="btn-reset" onclick="resetGame()">Main Lagi</button>
+        </div>
+    </div>
+
+    <script>
+        const boardElement = document.getElementById('board');
+        const indicatorElement = document.getElementById('indicator');
+        const resultOverlay = document.getElementById('resultOverlay');
+        const resultTitle = document.getElementById('resultTitle');
+        const resultMessage = document.getElementById('resultMessage');
+
+        let currentPlayer = 'X';
+        let gameState = ["", "", "", "", "", "", "", "", ""];
+        let isGameActive = true;
+
+        const winConditions = [
+            [0, 1, 2], [3, 4, 5], [6, 7, 8], // Baris
+            [0, 3, 6], [1, 4, 7], [2, 5, 8], // Kolom
+            [0, 4, 8], [2, 4, 6]             // Diagonal
+        ];
+
+        // Inisialisasi papan
+        function createBoard() {
+            boardElement.innerHTML = "";
+            gameState.forEach((cell, index) => {
+                const cellElement = document.createElement('div');
+                cellElement.classList.add('cell');
+                cellElement.setAttribute('data-index', index);
+                cellElement.addEventListener('click', handleCellClick);
+                boardElement.appendChild(cellElement);
+            });
+        }
+
+        function handleCellClick(e) {
+            const clickedCell = e.target;
+            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+            if (gameState[clickedCellIndex] !== "" || !isGameActive) {
+                return;
+            }
+
+            gameState[clickedCellIndex] = currentPlayer;
+            clickedCell.innerText = currentPlayer;
+            clickedCell.classList.add('taken');
+            
+            // Tambahkan efek animasi pop
+            clickedCell.classList.add('pop-in');
+            
+            // Warnai sel
+            clickedCell.classList.add(currentPlayer.toLowerCase());
+
+            checkResult();
+            
+            if (isGameActive) {
+                currentPlayer = currentPlayer === "X" ? "O" : "X";
+                updateStatus();
+            }
+        }
+
+        function updateStatus() {
+            indicatorElement.innerText = currentPlayer;
+        }
+
+        function checkResult() {
+            let roundWon = false;
+            let winningLine = [];
+
+            for (let i = 0; i < 8; i++) {
+                const winCondition = winConditions[i];
+                let a = gameState[winCondition[0]];
+                let b = gameState[winCondition[1]];
+                let c = gameState[winCondition[2]];
+
+                if (a === '' || b === '' || c === '') {
+                    continue;
+                }
+                if (a === b && b === c) {
+                    roundWon = true;
+                    winningLine = winCondition;
+                    break;
+                }
+            }
+
+            if (roundWon) {
+                endGame(false, winningLine);
+                return;
+            }
+
+            if (!gameState.includes("")) {
+                endGame(true); // Draw
+                return;
+            }
+        }
+
+        function endGame(draw, winningLine = []) {
+            isGameActive = false;
+            
+            if (winningLine.length > 0) {
+                const cells = document.querySelectorAll('.cell');
+                winningLine.forEach(index => {
+                    cells[index].classList.add('winner');
+                });
+            }
+
+            setTimeout(() => {
+                resultOverlay.classList.add('active');
+                if (draw) {
+                    resultTitle.innerText = "Seri!";
+                    resultMessage.innerText = "Tidak ada yang menang";
+                } else {
+                    resultTitle.innerText = "Selamat!";
+                    resultMessage.innerText = `Pemain ${currentPlayer} Menang`;
+                }
+            }, 500);
+        }
+
+        function resetGame() {
+            isGameActive = true;
+            currentPlayer = 'X';
+            gameState = ["", "", "", "", "", "", "", "", ""];
+            resultOverlay.classList.remove('active');
+            indicatorElement.innerText = currentPlayer;
+            createBoard();
+        }
+
+        // Jalankan saat pertama kali load
+        createBoard();
+    </script>
+</body>
+</html>
 
 </body>
 </html>
