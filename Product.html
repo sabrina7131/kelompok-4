@@ -207,105 +207,136 @@
     <div class="content">
       <section class="about-section">
         <h2> Our project ♡</h2>
- <!DOCTYPE html>
+        <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Tic Tac Toe</title>
+    <title>Game Tic Tac Toe Pink</title>
     <style>
-        /* CSS: Membuat tata letak di tengah & tidak melebar */
+        /* 1. Layout Utama (Center & Background) */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            /* Warna background pink非常 muda */
+            background-color: #fce4ec; 
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 100vh; /* Tinggi penuh layar */
         }
 
+        /* 2. Kotak Game Utama */
         .game-container {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            /* Bayangan pink agar terlihat jelas */
+            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.2);
+            width: 320px; /* Lebar tetap agar tidak melebar */
             text-align: center;
-            width: 300px; /* Batas lebar tetap agar tidak melebar */
         }
 
-        h1 { margin-top: 0; color: #333; }
+        /* 3. Judul & Status */
+        h1 {
+            color: #e91e63; /* Pink tua */
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
 
         .status {
-            margin-bottom: 15px;
+            color: #880e4f;
+            margin: 15px 0;
+            font-size: 1.1rem;
             font-weight: bold;
-            color: #555;
-            min-height: 20px;
+            min-height: 24px;
         }
 
+        /* 4. Papan Kotak (Grid) */
         .board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 5px;
+            gap: 10px;
             margin-bottom: 20px;
-            background-color: #333; /* Untuk garis pembatas */
-            border: 2px solid #333;
         }
 
         .cell {
-            background-color: white;
-            height: 90px;
+            /* Kotak Sel */
+            height: 80px;
+            background-color: #f8bbd0; /* Pink muda */
+            border-radius: 12px;
+            border: none;
+            font-size: 2.5rem;
+            color: white;
+            cursor: pointer;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            user-select: none;
+            transition: background 0.3s ease;
         }
 
-        .cell:hover { background-color: #f9f9f9; }
+        .cell:hover {
+            background-color: #f06292; /* Pink hover */
+        }
 
-        button {
-            padding: 10px 20px;
-            font-size: 1rem;
-            cursor: pointer;
-            background-color: #007BFF;
+        /* Warna spesifik untuk X dan O */
+        .cell.x { background-color: #ec407a; }
+        .cell.o { background-color: #d81b60; }
+
+        /* 5. Tombol Reset/Start */
+        .btn-restart {
+            background-color: #e91e63;
             color: white;
             border: none;
-            border-radius: 5px;
+            padding: 12px 30px;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: transform 0.1s;
+            box-shadow: 0 4px 10px rgba(233, 30, 99, 0.3);
         }
 
-        button:hover { background-color: #0056b3; }
+        .btn-restart:active {
+            transform: scale(0.95);
+        }
+
     </style>
 </head>
 <body>
 
     <div class="game-container">
         <h1>Tic Tac Toe</h1>
-        <div class="status" id="status">Giliran: X</div>
         
+        <!-- Status Miseum (Giliran, Menang, Kalah) -->
+        <div id="status" class="status">Siap? Main (X)</div>
+
+        <!-- Papan 3x3 -->
         <div class="board" id="board">
-            <!-- 9 Sel игры -->
-            <div class="cell" data-index="0"></div>
-            <div class="cell" data-index="1"></div>
-            <div class="cell" data-index="2"></div>
-            <div class="cell" data-index="3"></div>
-            <div class="cell" data-index="4"></div>
-            <div class="cell" data-index="5"></div>
-            <div class="cell" data-index="6"></div>
-            <div class="cell" data-index="7"></div>
-            <div class="cell" data-index="8"></div>
+            <button class="cell" data-index="0"></button>
+            <button class="cell" data-index="1"></button>
+            <button class="cell" data-index="2"></button>
+            <button class="cell" data-index="3"></button>
+            <button class="cell" data-index="4"></button>
+            <button class="cell" data-index="5"></button>
+            <button class="cell" data-index="6"></button>
+            <button class="cell" data-index="7"></button>
+            <button class="cell" data-index="8"></button>
         </div>
 
-        <button onclick="restartGame()">Mulai Ulang</button>
+        <!-- Tombol Mulai / Ulang -->
+        <button class="btn-restart" id="restartBtn">MULAI GAME</button>
     </div>
 
     <script>
-        // JavaScript: Logika Permainan
         const statusDisplay = document.getElementById('status');
         const cells = document.querySelectorAll('.cell');
-        let gameActive = true;
+        const restartBtn = document.getElementById('restartBtn');
+
+        let gameActive = false;
         let currentPlayer = "X";
         let gameState = ["", "", "", "", "", "", "", "", ""];
 
@@ -315,27 +346,27 @@
             [0, 4, 8], [2, 4, 6]             // Diagonal
         ];
 
-        // Menghandle klik
-        function handleCellClick(clickedCellEvent) {
-            const clickedCell = clickedCellEvent.target;
-            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+        // Pesan Status
+        const winningMessage = () => `Pemain ${currentPlayer} MENANG!`;
+        const drawMessage = () => `Hasilnya SERI!`;
+        const currentPlayerTurn = () => `Giliran: ${currentPlayer}`;
 
-            if (gameState[clickedCellIndex] !== "" || !gameActive) {
-                return;
-            }
-
-            handleCellPlayed(clickedCellIndex);
-            handleResultValidation();
+        function handleCellPlayed(clickedCell, clickedCellIndex) {
+            gameState[clickedCellIndex] = currentPlayer;
+            clickedCell.textContent = currentPlayer;
+            
+            // Tambahkan class untuk warna berbeda X dan O
+            clickedCell.classList.add(currentPlayer.toLowerCase());
         }
 
-        function handleCellPlayed(clickedCellIndex) {
-            gameState[clickedCellIndex] = currentPlayer;
-            cells[clickedCellIndex].innerText = currentPlayer;
+        function handlePlayerChange() {
+            currentPlayer = currentPlayer === "X" ? "O" : "X";
+            statusDisplay.textContent = currentPlayerTurn();
         }
 
         function handleResultValidation() {
             let roundWon = false;
-            for (let i = 0; i < 8; i++) {
+            for (let i = 0; i <= 7; i++) {
                 const winCondition = winningConditions[i];
                 let a = gameState[winCondition[0]];
                 let b = gameState[winCondition[1]];
@@ -350,31 +381,50 @@
             }
 
             if (roundWon) {
-                statusDisplay.innerText = "Pemenang: " + currentPlayer;
+                statusDisplay.textContent = winningMessage();
                 gameActive = false;
                 return;
             }
 
             let roundDraw = !gameState.includes("");
             if (roundDraw) {
-                statusDisplay.innerText = "Hasil: Seri!";
+                statusDisplay.textContent = drawMessage();
                 gameActive = false;
                 return;
             }
 
-            currentPlayer = currentPlayer === "X" ? "O" : "X";
-            statusDisplay.innerText = "Giliran: " + currentPlayer;
+            handlePlayerChange();
         }
 
-        function restartGame() {
+        function handleCellClick(clickedCellEvent) {
+            const clickedCell = clickedCellEvent.target;
+            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+
+            if (gameState[clickedCellIndex] !== "" || !gameActive) {
+                return;
+            }
+
+            handleCellPlayed(clickedCell, clickedCellIndex);
+            handleResultValidation();
+        }
+
+        function handleRestartGame() {
             gameActive = true;
             currentPlayer = "X";
             gameState = ["", "", "", "", "", "", "", "", ""];
-            statusDisplay.innerText = "Giliran: X";
-            cells.forEach(cell => cell.innerText = "");
+            statusDisplay.textContent = "Siap? Main (X)";
+            cells.forEach(cell => {
+                cell.textContent = "";
+                cell.classList.remove('x', 'o');
+            });
         }
 
+        // Event Listeners
         cells.forEach(cell => cell.addEventListener('click', handleCellClick));
+        restartBtn.addEventListener('click', handleRestartGame);
+
+        // Mulai game otomatis saat pertama kali dibuka
+        handleRestartGame();
     </script>
 </body>
 </html>
