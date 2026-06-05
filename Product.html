@@ -207,120 +207,213 @@
     <div class="content">
       <section class="about-section">
         <h2> Our project ♡</h2>
-  <think>
-The user wants a simple HTML file for Tic Tac Toe game with 9 boxes (3x3 grid), centered on the page, with Start Game, Win, Lose/Lose (draw) functionality, and play with friend. They want it to be in the middle, not on the side.
-
-Let me create a simple HTML file with CSS and JavaScript embedded - just HTML only as they requested.
-</think>```html
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tic Tac Toe - 9 Kotak</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #222;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .game {
-            background: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            text-align: center;
-        }
-        h1 { margin: 0 0 15px 0; color: #333; }
-        .status {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #d35400;
-        }
-        .board {
-            display: grid;
-            grid-template-columns: repeat(3, 80px);
-            grid-template-rows: repeat(3, 80px);
-            gap: 5px;
-            background: #333;
-            margin: 0 auto;
-        }
-        .cell {
-            background: #fff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 40px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .cell.x { color: #e74c3c; }
-        .cell.o { color: #3498db; }
-        button {
-            margin-top: 15px;
-            padding: 10px 25px;
-            font-size: 16px;
-            cursor: pointer;
-            background: #27ae60;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-        }
-    </style>
-</head>
-<body>
-<div class="game">
-    <h1>Tic Tac Toe</h1>
-    <div class="status" id="status">Giliran: X</div>
-    <div class="board">
-        <div class="cell" data-i="0"></div>
-        <div class="cell" data-i="1"></div>
-        <div class="cell" data-i="2"></div>
-        <div class="cell" data-i="3"></div>
-        <div class="cell" data-i="4"></div>
-        <div class="cell" data-i="5"></div>
-        <div class="cell" data-i="6"></div>
-        <div class="cell" data-i="7"></div>
-        <div class="cell" data-i="8"></div>
-    </div>
-    <button onclick="reset()">START GAME</button>
-</div>
-<script>
-    let p = "X", a = true, b = ["", "", "", "", "", "", "", "", ""];
-    const c = document.querySelectorAll(".cell");
-    const s = document.getElementById("status");
-    const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-    
-    c.forEach((el, i) => el.onclick = () => {
-        if (b[i] || !a) return;
-        b[i] = p;
-        el.textContent = p;
-        el.classList.add(p.toLowerCase());
-        for (let x of w) {
-            if (b[x[0]] && b[x[0]] == b[x[1]] && b[x[0]] == b[x[2]]) {
-                s.textContent = p + " MENANG!";
-                s.style.color = "#27ae60";
-                a = false; return;
-            }
-        }
-        if (!b.includes("")) { s.textContent = "SERI - KALAH!"; s.style.color = "#8e44ad"; a = false; return; }
-        p = p == "X" ? "O" : "X";
-        s.textContent = "Giliran: " + p;
-    });
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tic Tac Toe</title>
 
-    function reset() {
-        p = "X"; a = true; b = ["", "", "", "", "", "", "", "", ""];
-        s.textContent = "Giliran: X"; s.style.color = "#d35400";
-        c.forEach(el => { el.textContent = ""; el.classList.remove("x", "o"); });
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background-color:#f4f4f9;
+    font-family:Arial, sans-serif;
+}
+
+.game-container{
+    text-align:center;
+    width:320px;
+}
+
+h1{
+    margin-bottom:15px;
+    color:#333;
+}
+
+.status{
+    margin-bottom:20px;
+    font-size:18px;
+    font-weight:bold;
+    color:#555;
+    min-height:25px;
+}
+
+.board{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:5px;
+    background:#333;
+    border:5px solid #333;
+    margin-bottom:20px;
+}
+
+.cell{
+    width:100px;
+    height:100px;
+    background:#fff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:3rem;
+    font-weight:bold;
+    cursor:pointer;
+    user-select:none;
+    transition:background-color 0.2s;
+}
+
+.cell:hover{
+    background:#e6e6e6;
+}
+
+button{
+    padding:10px 20px;
+    font-size:16px;
+    border:none;
+    border-radius:6px;
+    background:#007BFF;
+    color:white;
+    cursor:pointer;
+    transition:background-color 0.2s;
+}
+
+button:hover{
+    background:#0056b3;
+}
+</style>
+</head>
+
+<body>
+
+<div class="game-container">
+    <h1>Tic Tac Toe</h1>
+
+    <div class="status" id="status">
+        Giliran: X
+    </div>
+
+    <div class="board">
+        <div class="cell" data-index="0"></div>
+        <div class="cell" data-index="1"></div>
+        <div class="cell" data-index="2"></div>
+        <div class="cell" data-index="3"></div>
+        <div class="cell" data-index="4"></div>
+        <div class="cell" data-index="5"></div>
+        <div class="cell" data-index="6"></div>
+        <div class="cell" data-index="7"></div>
+        <div class="cell" data-index="8"></div>
+    </div>
+
+    <button onclick="restartGame()">Mulai Ulang</button>
+</div>
+
+<script>
+const statusDisplay = document.getElementById("status");
+const cells = document.querySelectorAll(".cell");
+
+let gameActive = true;
+let currentPlayer = "X";
+let gameState = ["","","","","","","","",""];
+
+const winningConditions = [
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
+];
+
+function handleCellClick(event){
+    const clickedCell = event.target;
+    const clickedCellIndex = parseInt(
+        clickedCell.getAttribute("data-index")
+    );
+
+    if(
+        gameState[clickedCellIndex] !== "" ||
+        !gameActive
+    ){
+        return;
     }
+
+    handleCellPlayed(clickedCell, clickedCellIndex);
+    handleResultValidation();
+}
+
+function handleCellPlayed(clickedCell, clickedCellIndex){
+    gameState[clickedCellIndex] = currentPlayer;
+    clickedCell.innerText = currentPlayer;
+}
+
+function handleResultValidation(){
+    let roundWon = false;
+
+    for(let i = 0; i < winningConditions.length; i++){
+        const condition = winningConditions[i];
+
+        const a = gameState[condition[0]];
+        const b = gameState[condition[1]];
+        const c = gameState[condition[2]];
+
+        if(a === "" || b === "" || c === ""){
+            continue;
+        }
+
+        if(a === b && b === c){
+            roundWon = true;
+            break;
+        }
+    }
+
+    if(roundWon){
+        statusDisplay.innerText =
+            currentPlayer + " MENANG!";
+        gameActive = false;
+        return;
+    }
+
+    if(!gameState.includes("")){
+        statusDisplay.innerText = "SERI!";
+        gameActive = false;
+        return;
+    }
+
+    currentPlayer = currentPlayer === "X" ? "O" : "X";
+    statusDisplay.innerText =
+        "Giliran: " + currentPlayer;
+}
+
+function restartGame(){
+    gameActive = true;
+    currentPlayer = "X";
+    gameState = ["","","","","","","","",""];
+
+    statusDisplay.innerText = "Giliran: X";
+
+    cells.forEach(cell => {
+        cell.innerText = "";
+    });
+}
+
+cells.forEach(cell => {
+    cell.addEventListener("click", handleCellClick);
+});
 </script>
+
 </body>
 </html>
-```
 </body>
 </html>
 
