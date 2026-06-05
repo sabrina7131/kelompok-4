@@ -207,7 +207,264 @@
     <div class="content">
       <section class="about-section">
         <h2> Our project ♡</h2>
+        <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+        .status {
+            font-size: 22px;
+            margin-bottom: 20px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+        .status.start {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        .status.win {
+            background: #c8e6c9;
+            color: #388e3c;
+        }
+        .status.lose {
+            background: #ffcdd2;
+            color: #d32f2f;
+        }
+        .status.draw {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: #f5f5f5;
+            border: 3px solid #ddd;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 55px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .cell:hover {
+            background: #e8e8e8;
+            transform: scale(1.02);
+        }
+        .cell.x {
+            color: #e91e63;
+        }
+        .cell.o {
+            color: #2196f3;
+        }
+        .cell.winner {
+            background: #81c784;
+            border-color: #4caf50;
+            color: #1b5e20;
+        }
+        .btn {
+            padding: 12px 30px;
+            font-size: 18px;
+            cursor: pointer;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #45a049;
+        }
+        .btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tic Tac Toe</h1>
+        <div class="status start" id="status">Klik START untuk mulai!</div>
         
+        <div class="board" id="board">
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        
+        <button class="btn" id="startBtn" onclick="startGame()">START GAME</button>
+    </div>
+    
+    <script>
+        // Variabel game
+        let currentPlayer = 'X';
+        let gameActive = false;
+        let gameState = ['', '', '', '', '', '', '', '', ''];
+        
+        // Kombinasi kemenangan
+        const winningConditions = [
+            [0, 1, 2], // Baris 1
+            [3, 4, 5], // Baris 2
+            [6, 7, 8], // Baris 3
+            [0, 3, 6], // Kolom 1
+            [1, 4, 7], // Kolom 2
+            [2, 5, 8], // Kolom 3
+            [0, 4, 8], // Diagonal 1
+            [2, 4, 6]  // Diagonal 2
+        ];
+        
+        // Elemen DOM
+        const statusDisplay = document.getElementById('status');
+        const cells = document.querySelectorAll('.cell');
+        const startBtn = document.getElementById('startBtn');
+        
+        // Mulai game baru
+        function startGame() {
+            gameActive = true;
+            currentPlayer = 'X';
+            gameState = ['', '', '', '', '', '', '', '', ''];
+            
+            // Reset tampilan
+            statusDisplay.textContent = 'Giliran: Player ' + currentPlayer;
+            statusDisplay.className = 'status start';
+            startBtn.textContent = 'MAIN LAGI';
+            
+            cells.forEach(cell => {
+                cell.textContent = '';
+                cell.classList.remove('x', 'o', 'winner');
+            });
+        }
+        
+        // Klik pada cell
+        cells.forEach(cell => {
+            cell.addEventListener('click', handleCellClick);
+        });
+        
+        function handleCellClick(clickedCellEvent) {
+            const clickedCell = clickedCellEvent.target;
+            const clickedCellIndex = parseInt(clickedCell.getAttribute('data-index'));
+            
+            // Jika cell sudah terisi atau game tidak aktif, ignore
+            if (gameState[clickedCellIndex] !== '' || !gameActive) {
+                return;
+            }
+            
+            // Update state game
+            gameState[clickedCellIndex] = currentPlayer;
+            clickedCell.textContent = currentPlayer;
+            clickedCell.classList.add(currentPlayer.toLowerCase());
+            
+            // Cek kemenangan
+            const result = checkResult();
+            
+            if (result === 'win') {
+                statusDisplay.textContent = 'SELAMAT! ANDA MENANG! 🎉';
+                statusDisplay.className = 'status win';
+                gameActive = false;
+            } else if (result === 'lose') {
+                statusDisplay.textContent = 'ANDA KALAH! Coba lagi! 😢';
+                statusDisplay.className = 'status lose';
+                gameActive = false;
+            } else if (result === 'draw') {
+                statusDisplay.textContent = 'SERI! Tidak ada yang menang! 🤝';
+                statusDisplay.className = 'status draw';
+                gameActive = false;
+            } else {
+                // Ganti player
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                statusDisplay.textContent = 'Giliran: Player ' + currentPlayer;
+            }
+        }
+        
+        function checkResult() {
+            let roundWon = false;
+            let winningLine = [];
+            
+            // Cek kombinasi kemenangan
+            for (let i = 0; i < winningConditions.length; i++) {
+                const winCondition = winningConditions[i];
+                let a = gameState[winCondition[0]];
+                let b = gameState[winCondition[1]];
+                let c = gameState[winCondition[2]];
+                
+                if (a === '' || b === '' || c === '') {
+                    continue;
+                }
+                
+                if (a === b && b === c) {
+                    roundWon = true;
+                    winningLine = winCondition;
+                    break;
+                }
+            }
+            
+            if (roundWon) {
+                // Tandai cell pemenang
+                winningLine.forEach(index => {
+                    cells[index].classList.add('winner');
+                });
+                
+                // Jika Player X (user) menang
+                if (currentPlayer === 'X') {
+                    return 'win';
+                } else {
+                    return 'lose';
+                }
+            }
+            
+            // Cek seri
+            if (!gameState.includes('')) {
+                return 'draw';
+            }
+            
+            return null;
+        }
+    </script>
+</body>
+</html>
 </body>
 </html>
 
