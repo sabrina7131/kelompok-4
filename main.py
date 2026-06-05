@@ -1,3 +1,8 @@
+nama-proyek/
+ main.py
+templates/
+    product.html
+
 def print_board(board):
     """Prints the Tic Tac Toe board."""
     for row in board:
