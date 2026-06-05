@@ -184,64 +184,6 @@
       opacity: 0.15;
       z-index: -1;
     }
-        .game-container {
-        text-align: center;
-        background: #ecf0f1;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    }
-
-    h2 { margin: 0 0 15px 0; color: #2c3e50; }
-
-    .status {
-        font-size: 18px;
-        font-weight: bold;
-        margin-bottom: 15px;
-        min-height: 25px;
-        color: #e74c3c;
-    }
-
-    /* Grid 3x3 - 9 Kotak - Tidak melebar */
-    .board {
-        display: grid;
-        grid-template-columns: repeat(3, 80px);
-        grid-template-rows: repeat(3, 80px);
-        gap: 5px;
-        background: #34495e;
-        padding: 5px;
-        margin: 0 auto;
-    }
-
-    .cell {
-        background: #ecf0f1;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 40px;
-        font-weight: bold;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    .cell.x { color: #e74c3c; }
-    .cell.o { color: #3498db; }
-
-    .cell:hover { background: #bdc3c7; }
-
-    button {
-        margin-top: 15px;
-        padding: 10px 20px;
-        font-size: 14px;
-        cursor: pointer;
-        background: #27ae60;
-        color: white;
-        border: none;
-        border-radius: 5px;
-    }
-
-    button:hover { background: #2ecc71; }
-</style>
   </style>
 </head>
 <body>
@@ -265,21 +207,120 @@
     <div class="content">
       <section class="about-section">
         <h2> Our project ♡</h2>
-    <!-- 9 Kotak (3x3) -->
-<div class="board" id="board">
-    <div class="cell" data-id="0"></div>
-    <div class="cell" data-id="1"></div>
-    <div class="cell" data-id="2"></div>
-    <div class="cell" data-id="3"></div>
-    <div class="cell" data-id="4"></div>
-    <div class="cell" data-id="5"></div>
-    <div class="cell" data-id="6"></div>
-    <div class="cell" data-id="7"></div>
-    <div class="cell" data-id="8"></div>
-</div>
+  <think>
+The user wants a simple HTML file for Tic Tac Toe game with 9 boxes (3x3 grid), centered on the page, with Start Game, Win, Lose/Lose (draw) functionality, and play with friend. They want it to be in the middle, not on the side.
 
-<button onclick="startGame()">START GAME</button>
-  
+Let me create a simple HTML file with CSS and JavaScript embedded - just HTML only as they requested.
+</think>```html
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe - 9 Kotak</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .game {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        h1 { margin: 0 0 15px 0; color: #333; }
+        .status {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #d35400;
+        }
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 80px);
+            grid-template-rows: repeat(3, 80px);
+            gap: 5px;
+            background: #333;
+            margin: 0 auto;
+        }
+        .cell {
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .cell.x { color: #e74c3c; }
+        .cell.o { color: #3498db; }
+        button {
+            margin-top: 15px;
+            padding: 10px 25px;
+            font-size: 16px;
+            cursor: pointer;
+            background: #27ae60;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="game">
+    <h1>Tic Tac Toe</h1>
+    <div class="status" id="status">Giliran: X</div>
+    <div class="board">
+        <div class="cell" data-i="0"></div>
+        <div class="cell" data-i="1"></div>
+        <div class="cell" data-i="2"></div>
+        <div class="cell" data-i="3"></div>
+        <div class="cell" data-i="4"></div>
+        <div class="cell" data-i="5"></div>
+        <div class="cell" data-i="6"></div>
+        <div class="cell" data-i="7"></div>
+        <div class="cell" data-i="8"></div>
+    </div>
+    <button onclick="reset()">START GAME</button>
+</div>
+<script>
+    let p = "X", a = true, b = ["", "", "", "", "", "", "", "", ""];
+    const c = document.querySelectorAll(".cell");
+    const s = document.getElementById("status");
+    const w = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+    
+    c.forEach((el, i) => el.onclick = () => {
+        if (b[i] || !a) return;
+        b[i] = p;
+        el.textContent = p;
+        el.classList.add(p.toLowerCase());
+        for (let x of w) {
+            if (b[x[0]] && b[x[0]] == b[x[1]] && b[x[0]] == b[x[2]]) {
+                s.textContent = p + " MENANG!";
+                s.style.color = "#27ae60";
+                a = false; return;
+            }
+        }
+        if (!b.includes("")) { s.textContent = "SERI - KALAH!"; s.style.color = "#8e44ad"; a = false; return; }
+        p = p == "X" ? "O" : "X";
+        s.textContent = "Giliran: " + p;
+    });
+
+    function reset() {
+        p = "X"; a = true; b = ["", "", "", "", "", "", "", "", ""];
+        s.textContent = "Giliran: X"; s.style.color = "#d35400";
+        c.forEach(el => { el.textContent = ""; el.classList.remove("x", "o"); });
+    }
+</script>
+</body>
+</html>
+```
 </body>
 </html>
 
